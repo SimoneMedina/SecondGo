@@ -1,0 +1,64 @@
+export interface Usuario {
+  id: string;
+  nombres: string;
+  apellidos: string;
+  correo: string;
+  ubicacion: number;
+}
+
+export interface AuthResponse {
+  access_token: string;
+  usuario: {
+    id: string;
+    nombres: string;
+    apellidos: string;
+    correo: string;
+  };
+}
+
+export interface Producto {
+  id: string;
+  nombre: string;
+  descripcion: string;
+  fechaPublicacion: string;
+  color: string;
+  talla?: string;
+  dimensiones: string;
+  foto?: string;
+  estado: string;
+  tiendaId: string;
+  tiendaNombre?: string;
+}
+
+export interface ProductoListResponse {
+  productos: Producto[];
+  total: number;
+}
+
+export interface Tienda {
+  id: string;
+  nombre: string;
+  descripcion: string;
+  fechaCreacion: string;
+  ubicacion: number;
+  logo?: string;
+  ruc?: string;
+  idVendedor: string;
+  cantidadProductos?: number;
+}
+
+export interface Resena {
+  id: string;
+  calificacion: string;
+  valor: number;
+  descripcion: string;
+  compradorId: string;
+  compradorNombre?: string;
+  tiendaId: string;
+}
+
+export interface ApiResponse<T> {
+  success: boolean;
+  data: T;
+  message: string;
+}
