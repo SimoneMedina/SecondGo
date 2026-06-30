@@ -1,0 +1,263 @@
+﻿@model IEnumerable<Restaurante_GR07.Models.Producto>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Productos</title>
+    <style>
+        :root {
+            --verde: #22C55E;
+            --verde-claro: #86EFAC;
+            --turquesa: #06B6D4;
+            --azul: #2563EB;
+            --morado: #7C3AED;
+            --gris: #1F2937;
+            --gris-claro: #F3F4F6;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--gris-claro);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .app-layout {
+            max-width: 480px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            overflow: hidden;
+            min-height: 850px;
+        }
+
+        .app-header {
+            background: linear-gradient(135deg, var(--verde), #15803D);
+            color: white;
+            padding: 25px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+            .app-header h2 {
+                margin: 0;
+                font-size: 20px;
+                font-weight: 700;
+            }
+
+            .app-header p {
+                margin: 4px 0 0;
+                font-size: 12px;
+                color: rgba(255, 255, 255, 0.85);
+            }
+
+        .btn-add {
+            background-color: white;
+            color: #15803D;
+            text-decoration: none;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .app-content {
+            padding: 20px;
+        }
+
+        .alert {
+            background-color: var(--verde-claro);
+            color: #065F46;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 13px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .product-card-large {
+            background: white;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            border: 1px solid #E5E7EB;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .product-image-large {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .badge-status {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: rgba(21, 128, 61, 0.9);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            backdrop-filter: blur(4px);
+        }
+
+        .product-body {
+            padding: 20px;
+        }
+
+        .product-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .product-title {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--gris);
+        }
+
+        .product-code {
+            background-color: var(--gris-claro);
+            color: var(--gris);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .product-desc {
+            margin: 10px 0 15px 0;
+            font-size: 13px;
+            color: #4B5563;
+            line-height: 1.5;
+        }
+
+        .product-attributes {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .attr-pill {
+            background-color: #F0FDF4;
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            color: #166534;
+            font-weight: 500;
+            border: 1px solid var(--verde-claro);
+        }
+
+        .action-row {
+            display: flex;
+            gap: 10px;
+            border-top: 1px solid #F3F4F6;
+            padding-top: 15px;
+        }
+
+        .action-btn {
+            flex: 1;
+            text-align: center;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .btn-view {
+            background-color: #F0FDF4;
+            color: #166534;
+            border: 1px solid var(--verde-claro);
+        }
+
+        .btn-edit {
+            background-color: #FEF3C7;
+            color: #D97706;
+        }
+
+        .btn-delete {
+            background-color: #FEE2E2;
+            color: #EF4444;
+        }
+    </style>
+</head>
+<body>
+    <div style="max-width: 450px; margin: 10px auto; display: flex; justify-content: flex-start;">
+        <a href="/Tienda/Index" style="text-decoration: none; color: #4B5563; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 5px;">
+            ← Volver al Inicio
+        </a>
+    </div>
+
+    <div class="app-layout">
+        <div class="app-header">
+            <div>
+                <h2>📦 Mis Productos</h2>
+                <p>Catálogo de artículos</p>
+            </div>
+            <a href="/Productos/Crear" class="btn-add">➕ Nuevo</a>
+        </div>
+
+        <div class="app-content">
+            @if (TempData["Exito"] != null)
+            {
+                <div class="alert">
+                    @TempData["Exito"]
+                </div>
+            }
+
+            @foreach (var prod in Model)
+            {
+                <div class="product-card-large">
+                    <span class="badge-status">@prod.estado_producto</span>
+
+                    @if (prod.foto_producto != null && prod.foto_producto.Length > 0)
+                    {
+                        <img src="data:image/png;base64,@Convert.ToBase64String(prod.foto_producto)" class="product-image-large" alt="Producto" />
+                    }
+
+                    <div class="product-body">
+                        <div class="product-meta">
+                            <h3 class="product-title">@prod.nombre_producto</h3>
+                            <span class="product-code">@prod.id_producto</span>
+                        </div>
+
+                        <p class="product-desc">@prod.descripcion_producto</p>
+
+                        <div class="product-attributes">
+                            <span class="attr-pill">🎨 @prod.color_producto</span>
+                            @if (!string.IsNullOrEmpty(prod.talla_producto))
+                            {
+                                <span class="attr-pill">📏 Talla @prod.talla_producto</span>
+                            }
+                            <span class="attr-pill">📦 @prod.dimensiones_producto</span>
+                        </div>
+
+                        <div class="action-row">
+                            <a href="/Productos/Previsualizar/@prod.id_producto" class="action-btn btn-view">👁️ Ver</a>
+                            <a href="/Productos/Editar/@prod.id_producto" class="action-btn btn-edit">✏️ Editar</a>
+                            <a href="/Productos/Eliminar/@prod.id_producto" class="action-btn btn-delete">🗑️ Quitar</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+</body>
+</html>

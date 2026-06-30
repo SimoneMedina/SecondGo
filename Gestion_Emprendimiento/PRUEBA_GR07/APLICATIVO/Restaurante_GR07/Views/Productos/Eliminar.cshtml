@@ -1,0 +1,71 @@
+﻿@@model Restaurante_GR07.Models.Producto
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retirar Producto</title>
+    <style>
+        :root {
+            --gris-claro: #F3F4F6;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--gris-claro);
+            padding: 20px;
+        }
+
+        .app-delete {
+            max-width: 400px;
+            margin: 100px auto 0;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        h3 {
+            color: #EF4444;
+            margin-top: 0;
+        }
+
+        p {
+            color: #4B5563;
+            font-size: 14px;
+        }
+
+        .btn-confirm {
+            background: #EF4444;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-back {
+            display: inline-block;
+            margin-left: 10px;
+            color: #6B7280;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-delete">
+        <h3>🗑️ ¿Retirar del Catálogo?</h3>
+        <p>¿Estás seguro de que deseas eliminar el producto <strong>@Model.nombre_producto</strong> de la exhibición?</p>
+        <form action="/Productos/Eliminar/@Model.id_producto" method="post">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn-confirm">Eliminar Producto</button>
+            <a href="/Productos/Index" class="btn-back">Cancelar</a>
+        </form>
+    </div>
+</body>
+</html>

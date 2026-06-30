@@ -1,0 +1,74 @@
+﻿@model Restaurante_GR07.Models.Tienda
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eliminar Tienda</title>
+    <style>
+        :root {
+            --gris-claro: #F3F4F6;
+            --gris: #1F2937;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--gris-claro);
+            padding: 20px;
+        }
+
+        .app-delete {
+            max-width: 400px;
+            margin: 100px auto 0;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        h3 {
+            color: #EF4444;
+            margin-top: 0;
+        }
+
+        p {
+            color: #4B5563;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .btn-confirm {
+            background: #EF4444;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-back {
+            display: inline-block;
+            margin-left: 10px;
+            color: #6B7280;
+            text-decoration: none;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-delete">
+        <h3>⚠️ ¿Eliminar Establecimiento?</h3>
+        <p>Esta acción removerá la tienda <strong>@Model.nombre_local</strong> y todo su catálogo de productos de forma permanente.</p>
+        <form action="/Empresas/Eliminar/@Model.usuario_tienda" method="post">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn-confirm">Sí, Eliminar</button>
+            <a href="/Tienda/Index" class="btn-back">Cancelar</a>
+        </form>
+    </div>
+</body>
+</html>

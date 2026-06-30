@@ -1,0 +1,179 @@
+﻿@{
+    ViewData["Title"] = "Iniciar Sesión";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SecondGo - Login</title>
+</head>
+<body>
+
+    <div class="login-container">
+
+        <div class="login-card">
+
+            <div class="logo-container">
+                <img src="~/css/SecondGo.png" asp-append-version="true" alt="SecondGo" />
+            </div>
+
+            <div class="login-header">
+                <h1>SecondGo</h1>
+                <p>Dale una segunda vida, juntos.</p>
+            </div>
+
+            @if (ViewBag.Error != null)
+            {
+                <div class="alert-error">
+                    @ViewBag.Error
+                </div>
+            }
+
+            <form asp-action="Login" method="post">
+
+                @Html.AntiForgeryToken()
+
+                <div class="form-group">
+                    <label>Correo electrónico</label>
+                    <input type="email" name="correo" required />
+                </div>
+
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" name="password" required />
+                </div>
+
+                <button type="submit" class="btn-login">
+                    Iniciar Sesión
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
+
+<style>
+
+    :root {
+        --verde: #22C55E;
+        --verde-claro: #86EFAC;
+        --turquesa: #06B6D4;
+        --azul: #2563EB;
+        --morado: #7C3AED;
+        --gris: #1F2937;
+        --gris-claro: #F3F4F6;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Segoe UI',sans-serif;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        background: radial-gradient(circle at top left, rgba(134,239,172,.25), transparent 35%), radial-gradient(circle at top right, rgba(6,182,212,.15), transparent 30%), radial-gradient(circle at bottom right, rgba(37,99,235,.10), transparent 30%), #ffffff;
+    }
+
+    .login-card {
+        width: 460px;
+        background: #ffffff;
+        border: 3px solid var(--verde);
+        border-radius: 24px;
+        padding: 40px;
+        box-shadow: 0 15px 35px rgba(0,0,0,.08);
+    }
+
+    .logo-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 15px;
+    }
+
+        .logo-container img {
+            width: 170px;
+            height: auto;
+        }
+
+    .login-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+        .login-header h1 {
+            color: var(--verde);
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .login-header p {
+            color: #6b7280;
+        }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--gris);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: .3s;
+        }
+
+            .form-group input:focus {
+                outline: none;
+                border-color: var(--verde);
+                box-shadow: 0 0 0 4px rgba(34,197,94,.15);
+            }
+
+    .btn-login {
+        width: 100%;
+        padding: 14px;
+        border: none;
+        border-radius: 12px;
+        background: var(--verde);
+        color: white;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: .3s;
+    }
+
+        .btn-login:hover {
+            background: #16a34a;
+            transform: translateY(-2px);
+        }
+
+    .alert-error {
+        background: #fee2e2;
+        color: #991b1b;
+        padding: 12px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        border-left: 4px solid #dc2626;
+    }
+
+</style>

@@ -1,0 +1,195 @@
+﻿@model IEnumerable<Restaurante_GR07.Models.Reseña>
+
+@{
+    Layout = null;
+    var total = Model.Count();
+    var promedio = total > 0 ? Model.Average(r => r.valor_reseña) : 0;
+    var estrellasCompletas = (int)Math.Round(promedio);
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial de Reseñas</title>
+    <style>
+        :root {
+            --verde: #22C55E;
+            --verde-claro: #86EFAC;
+            --turquesa: #06B6D4;
+            --azul: #2563EB;
+            --morado: #7C3AED;
+            --gris: #1F2937;
+            --gris-claro: #F3F4F6;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--gris-claro);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .app-layout {
+            max-width: 480px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            overflow: hidden;
+            min-height: 850px;
+        }
+
+        .app-header {
+            background: linear-gradient(135deg, var(--verde), #15803D);
+            color: white;
+            padding: 25px 20px;
+        }
+
+            .app-header h2 {
+                margin: 0;
+                font-size: 20px;
+                font-weight: 700;
+            }
+
+        .score-box {
+            background: white;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            border: 1px solid #E5E7EB;
+        }
+
+        .score-num {
+            font-size: 44px;
+            font-weight: 800;
+            color: #D97706;
+            margin: 0;
+        }
+
+        .score-stars {
+            color: #F59E0B;
+            font-size: 22px;
+            margin: 8px 0;
+        }
+
+        .score-info {
+            margin: 0;
+            font-size: 12px;
+            color: #6B7280;
+        }
+
+        .feed-container {
+            padding: 0 20px 20px 20px;
+        }
+
+        .comment-card {
+            background: white;
+            border: 1px solid #E5E7EB;
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .user-id {
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--gris);
+        }
+
+        .store-badge {
+            background-color: #F0FDF4;
+            color: #166534;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+            border: 1px solid var(--verde-claro);
+        }
+
+        .star-rating {
+            color: #F59E0B;
+            font-size: 12px;
+        }
+
+        .comment-text {
+            margin: 0;
+            font-size: 13px;
+            color: #4B5563;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div style="max-width: 450px; margin: 10px auto; display: flex; justify-content: flex-start;">
+        <a href="/Tienda/Index" style="text-decoration: none; color: #4B5563; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 5px;">
+            ← Volver al Inicio
+        </a>
+    </div>
+    <div class="app-layout">
+        <div class="app-header">
+            <h2>💬 Reseñas</h2>
+        </div>
+
+        <div class="score-box">
+            <p class="score-num">@promedio.ToString("0.0")</p>
+            <div class="score-stars">
+                @for (int i = 1; i <= 5; i++)
+                {
+                    if (i <= estrellasCompletas)
+                    {
+                        <span>★</span>
+                    }
+                    else
+                    {
+                        <span style="color: #D1D5DB;">★</span>
+                    }
+                }
+            </div>
+            <p class="score-info">Calificación promedio global (@total opiniones)</p>
+        </div>
+
+        <div class="feed-container">
+            @foreach (var reseña in Model)
+            {
+                <div class="comment-card">
+                    <div class="comment-header">
+                        <span class="user-id">👤 @reseña.id_comprador</span>
+                        <span class="store-badge">🏪 @reseña.usuario_tienda</span>
+                    </div>
+                    <div class="comment-header" style="margin-bottom: 10px;">
+                        <div class="star-rating">
+                            @if (int.TryParse(reseña.calificacion_reseña, out int stars))
+                            {
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    if (i <= stars)
+                                    {
+                                        <span>★</span>
+                                    }
+                                    else
+                                    {
+                                        <span style="color: #D1D5DB;">★</span>
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                    <p class="comment-text">@reseña.descripcion_reseña</p>
+                </div>
+            }
+        </div>
+    </div>
+
+</body>
+</html>
