@@ -14,20 +14,28 @@ export class LoginUseCase {
   ) {}
 
   async execute(dto: LoginRequestDto): Promise<AuthResponseDto> {
-    const usuario = await this.authRepository.findByEmail(dto.correo.toLowerCase());
+    const usuario = await this.authRepository.findByEmail(
+      dto.correo.toLowerCase(),
+    );
     if (!usuario) {
       throw new UnauthorizedException('Correo o contraseña incorrectos');
     }
 
-    const passwordValida = await bcrypt.compare(dto.password, usuario.contrasena_usuario);
+    const passwordValida = await bcrypt.compare(
+      dto.password,
+      usuario.contrasena_usuario,
+    );
     if (!passwordValida) {
       throw new UnauthorizedException('Correo o contraseña incorrectos');
     }
+
+    const rol = usuario.Vendedor ? 'vendedor' : 'comprador';
 
     const payload: JwtPayload = {
       sub: usuario.id_usuario,
       email: usuario.correo_usuario,
       name: `${usuario.nombres_usuario} ${usuario.apellidos_usuario}`,
+      rol,
     };
 
     return {
@@ -37,6 +45,7 @@ export class LoginUseCase {
         nombres: usuario.nombres_usuario,
         apellidos: usuario.apellidos_usuario,
         correo: usuario.correo_usuario,
+        tipo_usuario: rol,
       },
     };
   }

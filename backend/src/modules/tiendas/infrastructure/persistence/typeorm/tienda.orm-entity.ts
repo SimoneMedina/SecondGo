@@ -26,13 +26,13 @@ export class TiendaOrmEntity {
   @Column({ type: 'float' })
   ubicacion_tienda: number;
 
-  @Column({ type: 'bytea', nullable: true })
-  logo_local: Buffer | null;
+  @Column({ type: 'varchar', length: 500, nullable: true })
+  logo_local: string | null;
 
   @Column({ type: 'varchar', length: 13, nullable: true })
   ruc_local: string | null;
 
-  @Column({ type: 'varchar', length: 25 })
+  @Column({ type: 'varchar', length: 36 })
   id_vendedor: string;
 
   @OneToOne(() => VendedorOrmEntity, (v) => v.Tienda)

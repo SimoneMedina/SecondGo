@@ -8,9 +8,14 @@ import { EliminarProductoUseCase } from './application/use-cases/eliminar-produc
 import { IProductoRepository } from './domain/interfaces/producto.repository.interface';
 import { ProductoTypeOrmRepository } from './infrastructure/persistence/producto.typeorm-repository';
 import { ProductoOrmEntity } from './infrastructure/persistence/typeorm/producto.orm-entity';
+import { FotoProductoOrmEntity } from './infrastructure/persistence/typeorm/foto-producto.orm-entity';
+import { StorageModule } from '../storage/storage.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ProductoOrmEntity])],
+  imports: [
+    TypeOrmModule.forFeature([ProductoOrmEntity, FotoProductoOrmEntity]),
+    StorageModule,
+  ],
   controllers: [ProductosController],
   providers: [
     CrearProductoUseCase,

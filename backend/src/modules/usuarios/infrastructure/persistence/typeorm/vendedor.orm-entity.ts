@@ -10,7 +10,7 @@ import { TiendaOrmEntity } from '../../../../tiendas/infrastructure/persistence/
 
 @Entity('Vendedores')
 export class VendedorOrmEntity {
-  @PrimaryColumn({ type: 'varchar', length: 25 })
+  @PrimaryColumn({ type: 'varchar', length: 36 })
   id_vendedor: string;
 
   @OneToOne(() => UsuarioOrmEntity)

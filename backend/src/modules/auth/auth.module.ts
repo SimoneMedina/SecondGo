@@ -10,16 +10,24 @@ import { IAuthRepository } from './domain/interfaces/auth.repository.interface';
 import { AuthTypeOrmRepository } from './infrastructure/persistence/auth.typeorm-repository';
 import { JwtStrategy } from './infrastructure/strategies/jwt.strategy';
 import { UsuarioOrmEntity } from '../usuarios/infrastructure/persistence/typeorm/usuario.orm-entity';
+import { CompradorOrmEntity } from '../usuarios/infrastructure/persistence/typeorm/comprador.orm-entity';
+import { VendedorOrmEntity } from '../usuarios/infrastructure/persistence/typeorm/vendedor.orm-entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UsuarioOrmEntity]),
+    TypeOrmModule.forFeature([
+      UsuarioOrmEntity,
+      CompradorOrmEntity,
+      VendedorOrmEntity,
+    ]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
-        secret: config.get<string>('JWT_SECRET') || 'SecondGo_JWT_SuperSecretKey_2026_Migration',
+        secret:
+          config.get<string>('JWT_SECRET') ||
+          'SecondGo_JWT_SuperSecretKey_2026_Migration',
         signOptions: {
           expiresIn: config.get<string>('JWT_EXPIRES_IN') || '60m',
         } as any,

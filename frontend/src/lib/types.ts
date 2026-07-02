@@ -1,9 +1,12 @@
+export type TipoUsuario = 'comprador' | 'vendedor';
+
 export interface Usuario {
   id: string;
   nombres: string;
   apellidos: string;
   correo: string;
   ubicacion: number;
+  tipo_usuario: TipoUsuario;
 }
 
 export interface AuthResponse {
@@ -13,6 +16,7 @@ export interface AuthResponse {
     nombres: string;
     apellidos: string;
     correo: string;
+    tipo_usuario: TipoUsuario;
   };
 }
 
@@ -24,7 +28,7 @@ export interface Producto {
   color: string;
   talla?: string;
   dimensiones: string;
-  foto?: string;
+  fotos: string[];
   estado: string;
   tiendaId: string;
   tiendaNombre?: string;

@@ -4,8 +4,10 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import { TiendaOrmEntity } from '../../../../tiendas/infrastructure/persistence/typeorm/tienda.orm-entity';
+import { FotoProductoOrmEntity } from './foto-producto.orm-entity';
 
 @Entity('Productos')
 export class ProductoOrmEntity {
@@ -30,9 +32,6 @@ export class ProductoOrmEntity {
   @Column({ type: 'varchar', length: 25 })
   dimensiones_producto: string;
 
-  @Column({ type: 'bytea', nullable: true })
-  foto_producto: Buffer | null;
-
   @Column({ type: 'varchar', length: 15 })
   estado_producto: string;
 
@@ -42,4 +41,7 @@ export class ProductoOrmEntity {
   @ManyToOne(() => TiendaOrmEntity, (t) => t.Productos)
   @JoinColumn({ name: 'usuario_tienda' })
   Tienda: TiendaOrmEntity;
+
+  @OneToMany(() => FotoProductoOrmEntity, (f) => f.Producto, { cascade: true })
+  Fotos: FotoProductoOrmEntity[];
 }

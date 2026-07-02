@@ -8,7 +8,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: ['http://localhost:3030', 'http://localhost:3031'],
+    origin: ['http://localhost:3130', 'http://localhost:3131'],
     credentials: true,
   });
 
@@ -25,7 +25,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(new ResponseTransformInterceptor());
   app.useGlobalFilters(new HttpExceptionFilter());
 
-  const port = process.env.PORT || 3031;
+  const port = process.env.PORT || 3131;
   await app.listen(port);
   console.log(`SecondGo API running on http://localhost:${port}`);
 }

@@ -22,7 +22,7 @@ export class ResenaOrmEntity {
   @Column({ type: 'varchar', length: 250 })
   descripcion_reseña: string;
 
-  @Column({ type: 'varchar', length: 25 })
+  @Column({ type: 'varchar', length: 36 })
   id_comprador: string;
 
   @ManyToOne(() => CompradorOrmEntity)

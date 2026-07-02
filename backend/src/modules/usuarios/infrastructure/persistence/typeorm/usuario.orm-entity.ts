@@ -9,7 +9,7 @@ import { CompradorOrmEntity } from './comprador.orm-entity';
 
 @Entity('Usuarios')
 export class UsuarioOrmEntity {
-  @PrimaryColumn({ type: 'varchar', length: 25 })
+  @PrimaryColumn({ type: 'varchar', length: 36 })
   id_usuario: string;
 
   @Column({ type: 'varchar', length: 50 })

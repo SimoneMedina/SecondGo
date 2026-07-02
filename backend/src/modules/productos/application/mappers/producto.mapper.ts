@@ -12,7 +12,7 @@ export class ProductoMapper {
       color_producto: orm.color_producto,
       talla_producto: orm.talla_producto ?? undefined,
       dimensiones_producto: orm.dimensiones_producto,
-      foto_producto: orm.foto_producto ?? undefined,
+      fotos: orm.Fotos?.map((foto) => foto.url_foto) ?? [],
       estado_producto: orm.estado_producto,
       usuario_tienda: orm.usuario_tienda,
     };
@@ -27,7 +27,7 @@ export class ProductoMapper {
       color: entity.color_producto,
       talla: entity.talla_producto,
       dimensiones: entity.dimensiones_producto,
-      foto: entity.foto_producto ? Buffer.from(entity.foto_producto).toString('base64') : undefined,
+      fotos: entity.fotos ?? [],
       estado: entity.estado_producto,
       tiendaId: entity.usuario_tienda,
     };
@@ -42,7 +42,7 @@ export class ProductoMapper {
       color: orm.color_producto,
       talla: orm.talla_producto ?? undefined,
       dimensiones: orm.dimensiones_producto,
-      foto: orm.foto_producto ? Buffer.from(orm.foto_producto).toString('base64') : undefined,
+      fotos: orm.Fotos?.map((foto) => foto.url_foto) ?? [],
       estado: orm.estado_producto,
       tiendaId: orm.usuario_tienda,
       tiendaNombre: orm.Tienda?.nombre_local,

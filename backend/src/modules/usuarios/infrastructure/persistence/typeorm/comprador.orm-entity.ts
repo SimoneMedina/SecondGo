@@ -3,7 +3,7 @@ import { UsuarioOrmEntity } from './usuario.orm-entity';
 
 @Entity('Compradores')
 export class CompradorOrmEntity {
-  @PrimaryColumn({ type: 'varchar', length: 25 })
+  @PrimaryColumn({ type: 'varchar', length: 36 })
   id_comprador: string;
 
   @OneToOne(() => UsuarioOrmEntity)

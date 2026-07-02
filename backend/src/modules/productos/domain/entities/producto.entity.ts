@@ -6,7 +6,7 @@ export class ProductoEntity {
   color_producto: string;
   talla_producto?: string;
   dimensiones_producto: string;
-  foto_producto?: Buffer;
+  fotos?: string[];
   estado_producto: string;
   usuario_tienda: string;
 }

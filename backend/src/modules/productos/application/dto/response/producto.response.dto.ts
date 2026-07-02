@@ -6,7 +6,7 @@ export class ProductoResponseDto {
   color: string;
   talla?: string;
   dimensiones: string;
-  foto?: string;
+  fotos: string[];
   estado: string;
   tiendaId: string;
   tiendaNombre?: string;

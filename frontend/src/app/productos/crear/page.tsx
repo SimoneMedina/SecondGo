@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useEffect, useMemo } from 'react';
 import api from '@/lib/api';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
-import { useEffect } from 'react';
+import axios from 'axios';
 
 export default function CrearProductoPage() {
   const [form, setForm] = useState({
@@ -15,87 +15,116 @@ export default function CrearProductoPage() {
     dimensiones_producto: '',
     estado_producto: 'Nuevo',
   });
-  const [archivo, setArchivo] = useState<File | null>(null);
+  const [archivos, setArchivos] = useState<File[]>([]);
   const [error, setError] = useState('');
   const router = useRouter();
   const { user, loading } = useAuth();
 
   useEffect(() => {
     if (!loading && !user) router.push('/login');
+    if (!loading && user?.tipo_usuario !== 'vendedor') router.push('/productos');
   }, [user, loading, router]);
 
-  if (loading || !user) return null;
+  const previews = useMemo(() => archivos.map((archivo) => URL.createObjectURL(archivo)), [archivos]);
+
+  useEffect(() => () => previews.forEach((url) => URL.revokeObjectURL(url)), [previews]);
+
+  if (loading || !user || user.tipo_usuario !== 'vendedor') return null;
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
 
     try {
-      const body: any = { ...form };
-      if (archivo) {
-        const buffer = await archivo.arrayBuffer();
-        body.foto_producto = Array.from(new Uint8Array(buffer));
-      }
+      const body = new FormData();
+      Object.entries(form).forEach(([key, value]) => body.append(key, value));
+      archivos.forEach((archivo) => body.append('fotos', archivo));
+
       await api.post('/productos', body);
       router.push('/productos');
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Error al crear producto');
+    } catch (err: unknown) {
+      const message = axios.isAxiosError(err) ? err.response?.data?.message : undefined;
+      setError(message || 'Error al crear producto');
     }
   };
 
+  const agregarArchivos = (files: FileList | null) => {
+    if (!files) return;
+    setArchivos((actuales) => [...actuales, ...Array.from(files)].slice(0, 10));
+  };
+
+  const quitarArchivo = (index: number) => {
+    setArchivos((actuales) => actuales.filter((_, i) => i !== index));
+  };
+
   return (
-    <div className="max-w-lg mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Nuevo Producto</h1>
+    <div className="mx-auto max-w-2xl">
+      <h1 className="mb-6 text-2xl font-bold">Nuevo Producto</h1>
 
       {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 text-sm">
+        <div className="mb-4 border border-red-400 bg-red-100 px-4 py-3 text-sm text-red-700">
           {error}
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="bg-white p-6 rounded-xl shadow-md space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 shadow-md">
         <div>
-          <label className="block text-sm font-medium mb-1">Nombre</label>
+          <label className="mb-1 block text-sm font-medium">Nombre</label>
           <input type="text" value={form.nombre_producto} onChange={(e) => setForm({ ...form, nombre_producto: e.target.value })}
-            className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500" required />
+            className="w-full border px-3 py-2 focus:ring-2 focus:ring-indigo-500" required />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Descripción</label>
+          <label className="mb-1 block text-sm font-medium">Descripcion</label>
           <textarea value={form.descripcion_producto} onChange={(e) => setForm({ ...form, descripcion_producto: e.target.value })}
-            className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500" required />
+            className="w-full border px-3 py-2 focus:ring-2 focus:ring-indigo-500" required />
         </div>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
-            <label className="block text-sm font-medium mb-1">Color</label>
+            <label className="mb-1 block text-sm font-medium">Color</label>
             <input type="text" value={form.color_producto} onChange={(e) => setForm({ ...form, color_producto: e.target.value })}
-              className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500" required />
+              className="w-full border px-3 py-2 focus:ring-2 focus:ring-indigo-500" required />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">Talla</label>
+            <label className="mb-1 block text-sm font-medium">Talla</label>
             <input type="text" value={form.talla_producto} onChange={(e) => setForm({ ...form, talla_producto: e.target.value })}
-              className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500" />
+              className="w-full border px-3 py-2 focus:ring-2 focus:ring-indigo-500" />
           </div>
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Dimensiones</label>
+          <label className="mb-1 block text-sm font-medium">Dimensiones</label>
           <input type="text" value={form.dimensiones_producto} onChange={(e) => setForm({ ...form, dimensiones_producto: e.target.value })}
-            className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500" required />
+            className="w-full border px-3 py-2 focus:ring-2 focus:ring-indigo-500" required />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Estado</label>
+          <label className="mb-1 block text-sm font-medium">Estado</label>
           <select value={form.estado_producto} onChange={(e) => setForm({ ...form, estado_producto: e.target.value })}
-            className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500">
+            className="w-full border px-3 py-2 focus:ring-2 focus:ring-indigo-500">
             <option>Nuevo</option>
             <option>Usado</option>
             <option>Reacondicionado</option>
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Foto</label>
-          <input type="file" accept="image/*" onChange={(e) => setArchivo(e.target.files?.[0] || null)}
-            className="w-full" />
+          <label className="mb-2 block text-sm font-medium">Fotos</label>
+          <input type="file" accept="image/*" multiple onChange={(e) => agregarArchivos(e.target.files)} className="w-full" />
+          {previews.length > 0 && (
+            <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {previews.map((preview, index) => (
+                <div key={preview} className="relative aspect-square overflow-hidden bg-gray-100">
+                  <img src={preview} alt={`Vista previa ${index + 1}`} className="h-full w-full object-cover" />
+                  <button
+                    type="button"
+                    onClick={() => quitarArchivo(index)}
+                    className="absolute right-2 top-2 bg-black/70 px-2 py-1 text-xs text-white"
+                  >
+                    Quitar
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
-        <button type="submit" className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700">
+        <button type="submit" className="w-full bg-indigo-600 py-2 text-white hover:bg-indigo-700">
           Crear Producto
         </button>
       </form>

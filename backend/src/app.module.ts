@@ -12,6 +12,7 @@ import { VendedorOrmEntity } from './modules/usuarios/infrastructure/persistence
 import { CompradorOrmEntity } from './modules/usuarios/infrastructure/persistence/typeorm/comprador.orm-entity';
 import { TiendaOrmEntity } from './modules/tiendas/infrastructure/persistence/typeorm/tienda.orm-entity';
 import { ProductoOrmEntity } from './modules/productos/infrastructure/persistence/typeorm/producto.orm-entity';
+import { FotoProductoOrmEntity } from './modules/productos/infrastructure/persistence/typeorm/foto-producto.orm-entity';
 import { ResenaOrmEntity } from './modules/resenas/infrastructure/persistence/typeorm/resena.orm-entity';
 
 @Module({
@@ -33,6 +34,7 @@ import { ResenaOrmEntity } from './modules/resenas/infrastructure/persistence/ty
           CompradorOrmEntity,
           TiendaOrmEntity,
           ProductoOrmEntity,
+          FotoProductoOrmEntity,
           ResenaOrmEntity,
         ],
         synchronize: true,

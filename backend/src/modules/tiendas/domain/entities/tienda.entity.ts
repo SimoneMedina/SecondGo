@@ -4,7 +4,7 @@ export class TiendaEntity {
   descripcion_tienda: string;
   fecha_creacion_tienda: Date;
   ubicacion_tienda: number;
-  logo_local?: Buffer;
+  logo_local?: string;
   ruc_local?: string;
   id_vendedor: string;
 }

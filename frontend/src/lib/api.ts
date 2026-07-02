@@ -3,7 +3,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3031/api',
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3131/api',
   headers: { 'Content-Type': 'application/json' },
 });
 
@@ -13,6 +13,9 @@ api.interceptors.request.use((config) => {
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+  }
+  if (config.data instanceof FormData) {
+    delete config.headers['Content-Type'];
   }
   return config;
 });

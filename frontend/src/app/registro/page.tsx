@@ -4,15 +4,26 @@ import { useState, FormEvent } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import axios from 'axios';
+import { TipoUsuario } from '@/lib/types';
+
+interface RegisterForm {
+  nombres_usuario: string;
+  apellidos_usuario: string;
+  correo_usuario: string;
+  contrasena_usuario: string;
+  ubicacion_usuario: number;
+  tipo_usuario: TipoUsuario;
+}
 
 export default function RegisterPage() {
-  const [form, setForm] = useState({
-    id_usuario: '',
+  const [form, setForm] = useState<RegisterForm>({
     nombres_usuario: '',
     apellidos_usuario: '',
     correo_usuario: '',
     contrasena_usuario: '',
     ubicacion_usuario: 0,
+    tipo_usuario: 'comprador',
   });
   const [error, setError] = useState('');
   const { register } = useAuth();
@@ -24,85 +35,98 @@ export default function RegisterPage() {
     try {
       await register(form);
       router.push('/');
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Error al registrarse');
+    } catch (err: unknown) {
+      const message = axios.isAxiosError(err) ? err.response?.data?.message : undefined;
+      setError(message || 'Error al registrarse');
     }
   };
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center">
-      <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
-        <h1 className="text-2xl font-bold text-center mb-6">Crear Cuenta</h1>
+    <div className="flex min-h-[80vh] items-center justify-center">
+      <div className="w-full max-w-md bg-white p-8 shadow-md">
+        <h1 className="mb-6 text-center text-2xl font-bold">Crear Cuenta</h1>
 
         {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 text-sm">
+          <div className="mb-4 border border-red-400 bg-red-100 px-4 py-3 text-sm text-red-700">
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-3">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Usuario ID</label>
-            <input
-              type="text"
-              value={form.id_usuario}
-              onChange={(e) => setForm({ ...form, id_usuario: e.target.value })}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              required
-            />
+            <label className="mb-2 block text-sm font-medium text-gray-700">Tipo de cuenta</label>
+            <div className="grid grid-cols-2 gap-3">
+              {(['comprador', 'vendedor'] as const).map((tipo) => (
+                <button
+                  key={tipo}
+                  type="button"
+                  onClick={() => setForm({ ...form, tipo_usuario: tipo })}
+                  className={`border p-4 text-left transition ${
+                    form.tipo_usuario === tipo
+                      ? 'border-indigo-600 bg-indigo-50 ring-2 ring-indigo-200'
+                      : 'border-gray-200 hover:border-indigo-300'
+                  }`}
+                >
+                  <span className="block text-sm font-semibold capitalize">{tipo}</span>
+                  <span className="mt-1 block text-xs text-gray-500">
+                    {tipo === 'comprador' ? 'Explorar y resenar tiendas' : 'Publicar productos y tienda'}
+                  </span>
+                </button>
+              ))}
+            </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Nombres</label>
+            <label className="mb-1 block text-sm font-medium text-gray-700">Nombres</label>
             <input
               type="text"
               value={form.nombres_usuario}
               onChange={(e) => setForm({ ...form, nombres_usuario: e.target.value })}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               required
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Apellidos</label>
+            <label className="mb-1 block text-sm font-medium text-gray-700">Apellidos</label>
             <input
               type="text"
               value={form.apellidos_usuario}
               onChange={(e) => setForm({ ...form, apellidos_usuario: e.target.value })}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               required
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico</label>
+            <label className="mb-1 block text-sm font-medium text-gray-700">Correo Electronico</label>
             <input
               type="email"
               value={form.correo_usuario}
               onChange={(e) => setForm({ ...form, correo_usuario: e.target.value })}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               required
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
+            <label className="mb-1 block text-sm font-medium text-gray-700">Contrasena</label>
             <input
               type="password"
               value={form.contrasena_usuario}
               onChange={(e) => setForm({ ...form, contrasena_usuario: e.target.value })}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               required
             />
           </div>
 
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition"
+            className="w-full bg-indigo-600 py-2 text-white transition hover:bg-indigo-700"
           >
             Registrarse
           </button>
         </form>
 
-        <p className="text-center text-sm text-gray-500 mt-4">
-          ¿Ya tienes cuenta?{' '}
-          <Link href="/login" className="text-indigo-600 hover:underline">Inicia sesión</Link>
+        <p className="mt-4 text-center text-sm text-gray-500">
+          Ya tienes cuenta?{' '}
+          <Link href="/login" className="text-indigo-600 hover:underline">Inicia sesion</Link>
         </p>
       </div>
     </div>

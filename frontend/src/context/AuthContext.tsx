@@ -1,14 +1,24 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, ReactNode } from 'react';
 import api from '@/lib/api';
-import { AuthResponse } from '@/lib/types';
+import { AuthResponse, TipoUsuario } from '@/lib/types';
 
 interface User {
   id: string;
   nombres: string;
   apellidos: string;
   correo: string;
+  tipo_usuario: TipoUsuario;
+}
+
+interface RegisterData {
+  nombres_usuario: string;
+  apellidos_usuario: string;
+  correo_usuario: string;
+  contrasena_usuario: string;
+  ubicacion_usuario: number;
+  tipo_usuario: TipoUsuario;
 }
 
 interface AuthContextType {
@@ -16,26 +26,23 @@ interface AuthContextType {
   token: string | null;
   loading: boolean;
   login: (correo: string, password: string) => Promise<void>;
-  register: (data: { id_usuario: string; nombres_usuario: string; apellidos_usuario: string; correo_usuario: string; contrasena_usuario: string; ubicacion_usuario: number }) => Promise<void>;
+  register: (data: RegisterData) => Promise<void>;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const savedToken = localStorage.getItem('token');
+  const [user, setUser] = useState<User | null>(() => {
+    if (typeof window === 'undefined') return null;
     const savedUser = localStorage.getItem('usuario');
-    if (savedToken && savedUser) {
-      setToken(savedToken);
-      setUser(JSON.parse(savedUser));
-    }
-    setLoading(false);
-  }, []);
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
+  const [token, setToken] = useState<string | null>(() => {
+    if (typeof window === 'undefined') return null;
+    return localStorage.getItem('token');
+  });
+  const [loading] = useState(false);
 
   const login = async (correo: string, password: string) => {
     const { data } = await api.post<{ success: boolean; data: AuthResponse }>('/auth/login', { correo, password });
@@ -46,7 +53,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(usuario);
   };
 
-  const register = async (userData: { id_usuario: string; nombres_usuario: string; apellidos_usuario: string; correo_usuario: string; contrasena_usuario: string; ubicacion_usuario: number }) => {
+  const register = async (userData: RegisterData) => {
     const { data } = await api.post<{ success: boolean; data: AuthResponse }>('/auth/register', userData);
     const { access_token, usuario } = data.data;
     localStorage.setItem('token', access_token);

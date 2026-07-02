@@ -5,5 +5,6 @@ export class AuthResponseDto {
     nombres: string;
     apellidos: string;
     correo: string;
+    tipo_usuario: 'comprador' | 'vendedor';
   };
 }

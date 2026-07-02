@@ -1,9 +1,8 @@
-import { IsString, IsNumber } from 'class-validator';
+import { IsIn, IsNumber, IsString } from 'class-validator';
+
+export type TipoUsuario = 'comprador' | 'vendedor';
 
 export class RegisterRequestDto {
-  @IsString()
-  id_usuario: string;
-
   @IsString()
   nombres_usuario: string;
 
@@ -18,4 +17,7 @@ export class RegisterRequestDto {
 
   @IsNumber()
   ubicacion_usuario: number;
+
+  @IsIn(['comprador', 'vendedor'])
+  tipo_usuario: TipoUsuario;
 }

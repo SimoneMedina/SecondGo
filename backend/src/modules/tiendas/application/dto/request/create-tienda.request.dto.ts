@@ -3,5 +3,5 @@ export class CreateTiendaRequestDto {
   descripcion_tienda: string;
   ubicacion_tienda: number;
   ruc_local?: string;
-  logo_local?: Buffer;
+  logo_local?: string;
 }

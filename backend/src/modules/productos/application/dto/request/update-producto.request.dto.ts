@@ -5,5 +5,4 @@ export class UpdateProductoRequestDto {
   talla_producto?: string;
   dimensiones_producto?: string;
   estado_producto?: string;
-  foto_producto?: Buffer;
 }

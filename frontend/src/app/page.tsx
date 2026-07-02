@@ -17,31 +17,35 @@ export default function Home() {
 
   if (loading || !user) return null;
 
+  const esVendedor = user.tipo_usuario === 'vendedor';
+  const accesos = esVendedor
+    ? [
+        { href: '/tiendas', titulo: 'Mi Tienda', texto: 'Administra la informacion de tu local' },
+        { href: '/productos', titulo: 'Mis Productos', texto: 'Revisa el inventario publicado' },
+        { href: '/productos/crear', titulo: 'Nuevo Producto', texto: 'Publica articulos con fotos' },
+      ]
+    : [
+        { href: '/productos', titulo: 'Catalogo', texto: 'Explora productos disponibles' },
+        { href: '/tiendas', titulo: 'Tiendas', texto: 'Encuentra locales registrados' },
+        { href: '/resenas', titulo: 'Resenas', texto: 'Comparte opiniones sobre tiendas' },
+      ];
+
   return (
     <div className="space-y-8">
-      <div className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-2xl p-8">
-        <h1 className="text-3xl font-bold mb-2">Bienvenido, {user.nombres}</h1>
-        <p className="text-indigo-100">Panel de control de SecondGo</p>
+      <div className="bg-gradient-to-r from-indigo-500 to-purple-600 p-8 text-white">
+        <h1 className="mb-2 text-3xl font-bold">Bienvenido, {user.nombres}</h1>
+        <p className="text-indigo-100">
+          {esVendedor ? 'Panel para gestionar tu tienda' : 'Panel para explorar SecondGo'}
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Link href="/productos" className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition">
-          <div className="text-3xl mb-3">📦</div>
-          <h2 className="text-lg font-semibold">Productos</h2>
-          <p className="text-gray-500 text-sm">Gestiona el catálogo de productos</p>
-        </Link>
-
-        <Link href="/tiendas" className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition">
-          <div className="text-3xl mb-3">🏪</div>
-          <h2 className="text-lg font-semibold">Tiendas</h2>
-          <p className="text-gray-500 text-sm">Administra las tiendas registradas</p>
-        </Link>
-
-        <Link href="/resenas" className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition">
-          <div className="text-3xl mb-3">⭐</div>
-          <h2 className="text-lg font-semibold">Reseñas</h2>
-          <p className="text-gray-500 text-sm">Revisa las opiniones de los clientes</p>
-        </Link>
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+        {accesos.map((acceso) => (
+          <Link key={acceso.href} href={acceso.href} className="bg-white p-6 shadow-md transition hover:shadow-lg">
+            <h2 className="text-lg font-semibold">{acceso.titulo}</h2>
+            <p className="mt-2 text-sm text-gray-500">{acceso.texto}</p>
+          </Link>
+        ))}
       </div>
     </div>
   );

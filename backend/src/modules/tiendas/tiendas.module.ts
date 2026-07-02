@@ -10,9 +10,17 @@ import { TiendaTypeOrmRepository } from './infrastructure/persistence/tienda.typ
 import { TiendaOrmEntity } from './infrastructure/persistence/typeorm/tienda.orm-entity';
 import { VendedorOrmEntity } from '../usuarios/infrastructure/persistence/typeorm/vendedor.orm-entity';
 import { ProductoOrmEntity } from '../productos/infrastructure/persistence/typeorm/producto.orm-entity';
+import { StorageModule } from '../storage/storage.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([TiendaOrmEntity, VendedorOrmEntity, ProductoOrmEntity])],
+  imports: [
+    TypeOrmModule.forFeature([
+      TiendaOrmEntity,
+      VendedorOrmEntity,
+      ProductoOrmEntity,
+    ]),
+    StorageModule,
+  ],
   controllers: [TiendasController],
   providers: [
     CrearTiendaUseCase,
