@@ -7,6 +7,17 @@ import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 
+const tallaLabels: Record<string, string> = {
+  XXS: 'XXS - 30',
+  XS: 'XS / PP - 32 a 34',
+  S: 'S / P - 36 a 38',
+  M: 'M - 40',
+  L: 'L / G - 42',
+  XL: 'XL / GG - 44',
+  XXL: 'XXL / 2XL - 46',
+  XXXL: 'XXXL / 3XL - 48',
+};
+
 export default function ProductosPage() {
   const [productos, setProductos] = useState<Producto[]>([]);
   const [fotoActual, setFotoActual] = useState<Record<string, number>>({});
@@ -85,7 +96,7 @@ export default function ProductosPage() {
                   <div className="mt-3 flex flex-wrap items-center gap-2 text-sm text-gray-600">
                     <span className="bg-gray-100 px-2 py-0.5">{p.estado}</span>
                     <span>{p.color}</span>
-                    <span>{p.dimensiones}</span>
+                    {p.talla && <span>{tallaLabels[p.talla] ?? p.talla}</span>}
                   </div>
                   {p.tiendaNombre && (
                     <p className="mt-2 text-xs text-gray-400">Tienda: {p.tiendaNombre}</p>

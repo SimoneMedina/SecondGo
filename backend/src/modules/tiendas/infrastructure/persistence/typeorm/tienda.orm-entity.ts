@@ -23,14 +23,11 @@ export class TiendaOrmEntity {
   @Column({ type: 'timestamp' })
   fecha_creacion_tienda: Date;
 
-  @Column({ type: 'float' })
-  ubicacion_tienda: number;
+  @Column({ type: 'varchar', length: 250, nullable: true })
+  ubicacion_tienda: string | null;
 
   @Column({ type: 'varchar', length: 500, nullable: true })
   logo_local: string | null;
-
-  @Column({ type: 'varchar', length: 13, nullable: true })
-  ruc_local: string | null;
 
   @Column({ type: 'varchar', length: 36 })
   id_vendedor: string;

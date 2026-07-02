@@ -10,8 +10,7 @@ export default function CrearTiendaPage() {
   const [form, setForm] = useState({
     nombre_local: '',
     descripcion_tienda: '',
-    ubicacion_tienda: 0,
-    ruc_local: '',
+    ubicacion_tienda: '',
   });
   const [logo, setLogo] = useState<File | null>(null);
   const [error, setError] = useState('');
@@ -38,8 +37,7 @@ export default function CrearTiendaPage() {
       const body = new FormData();
       body.append('nombre_local', form.nombre_local);
       body.append('descripcion_tienda', form.descripcion_tienda);
-      body.append('ubicacion_tienda', String(form.ubicacion_tienda));
-      if (form.ruc_local) body.append('ruc_local', form.ruc_local);
+      body.append('ubicacion_tienda', form.ubicacion_tienda);
       if (logo) body.append('logo', logo);
 
       await api.post('/tiendas', body);
@@ -73,13 +71,8 @@ export default function CrearTiendaPage() {
         </div>
         <div>
           <label className="mb-1 block text-sm font-medium">Ubicacion</label>
-          <input type="number" step="0.01" value={form.ubicacion_tienda} onChange={(e) => setForm({ ...form, ubicacion_tienda: parseFloat(e.target.value) })}
+          <input type="text" value={form.ubicacion_tienda} onChange={(e) => setForm({ ...form, ubicacion_tienda: e.target.value })}
             className="w-full border px-3 py-2 focus:ring-2 focus:ring-indigo-500" required />
-        </div>
-        <div>
-          <label className="mb-1 block text-sm font-medium">RUC</label>
-          <input type="text" value={form.ruc_local} onChange={(e) => setForm({ ...form, ruc_local: e.target.value })}
-            className="w-full border px-3 py-2 focus:ring-2 focus:ring-indigo-500" maxLength={13} />
         </div>
         <div>
           <label className="mb-2 block text-sm font-medium">Logo</label>

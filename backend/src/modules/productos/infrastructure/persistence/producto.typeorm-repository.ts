@@ -26,9 +26,11 @@ export class ProductoTypeOrmRepository implements IProductoRepository {
   }
 
   async findLastProducto(): Promise<ProductoOrmEntity | null> {
-    return this.repo.findOne({
+    const [producto] = await this.repo.find({
       order: { id_producto: 'DESC' },
+      take: 1,
     });
+    return producto ?? null;
   }
 
   async findByTienda(usuarioTienda: string): Promise<ProductoOrmEntity[]> {

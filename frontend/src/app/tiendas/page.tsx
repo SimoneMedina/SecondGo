@@ -73,7 +73,6 @@ export default function TiendasPage() {
                   <span className="bg-gray-100 px-2 py-0.5">
                     {t.cantidadProductos ?? 0} productos
                   </span>
-                  {t.ruc && <span>RUC: {t.ruc}</span>}
                 </div>
               </div>
             </div>

@@ -5,7 +5,7 @@ export interface Usuario {
   nombres: string;
   apellidos: string;
   correo: string;
-  ubicacion: number;
+  ubicacion?: string;
   tipo_usuario: TipoUsuario;
 }
 
@@ -27,7 +27,6 @@ export interface Producto {
   fechaPublicacion: string;
   color: string;
   talla?: string;
-  dimensiones: string;
   fotos: string[];
   estado: string;
   tiendaId: string;
@@ -44,9 +43,8 @@ export interface Tienda {
   nombre: string;
   descripcion: string;
   fechaCreacion: string;
-  ubicacion: number;
+  ubicacion?: string;
   logo?: string;
-  ruc?: string;
   idVendedor: string;
   cantidadProductos?: number;
 }

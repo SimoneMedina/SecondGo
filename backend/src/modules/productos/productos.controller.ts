@@ -5,6 +5,7 @@ import {
   Put,
   Delete,
   Body,
+  ForbiddenException,
   Param,
   UseGuards,
   Req,
@@ -60,6 +61,9 @@ export class ProductosController {
     @Req() req: AuthenticatedRequest,
     @UploadedFiles() fotos: UploadedStorageFile[],
   ) {
+    if (req.user.rol !== 'vendedor') {
+      throw new ForbiddenException('Solo vendedores pueden publicar productos');
+    }
     const usuarioTienda = req.user.id_usuario;
     return this.crearProductoUseCase.execute(dto, usuarioTienda, fotos ?? []);
   }

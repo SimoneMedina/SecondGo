@@ -5,7 +5,6 @@ export class ProductoResponseDto {
   fechaPublicacion: Date;
   color: string;
   talla?: string;
-  dimensiones: string;
   fotos: string[];
   estado: string;
   tiendaId: string;

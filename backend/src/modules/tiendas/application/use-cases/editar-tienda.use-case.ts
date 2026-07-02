@@ -29,9 +29,8 @@ export class EditarTiendaUseCase {
         descripcion_tienda: dto.descripcion_tienda,
       }),
       ...(dto.ubicacion_tienda !== undefined && {
-        ubicacion_tienda: Number(dto.ubicacion_tienda),
+        ubicacion_tienda: dto.ubicacion_tienda,
       }),
-      ...(dto.ruc_local !== undefined && { ruc_local: dto.ruc_local }),
       ...(logo && {
         logo_local: await this.storageService.uploadFile(
           logo,

@@ -44,14 +44,13 @@ export class CrearTiendaUseCase {
           logo,
           `vendedores/${idUsuario}/tienda`,
         )
-      : dto.logo_local;
+      : undefined;
 
     const orm = await this.tiendaRepository.create({
       usuario_tienda: idUsuario,
       nombre_local: dto.nombre_local,
       descripcion_tienda: dto.descripcion_tienda,
-      ubicacion_tienda: Number(dto.ubicacion_tienda),
-      ruc_local: dto.ruc_local,
+      ubicacion_tienda: dto.ubicacion_tienda,
       logo_local: logoUrl,
       fecha_creacion_tienda: new Date(),
       id_vendedor: idUsuario,

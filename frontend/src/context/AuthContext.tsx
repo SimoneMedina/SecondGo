@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import api from '@/lib/api';
 import { AuthResponse, TipoUsuario } from '@/lib/types';
 
@@ -33,16 +33,31 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(() => {
-    if (typeof window === 'undefined') return null;
-    const savedUser = localStorage.getItem('usuario');
-    return savedUser ? JSON.parse(savedUser) : null;
-  });
-  const [token, setToken] = useState<string | null>(() => {
-    if (typeof window === 'undefined') return null;
-    return localStorage.getItem('token');
-  });
-  const [loading] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelado = false;
+
+    queueMicrotask(() => {
+      if (cancelado) return;
+
+      const savedToken = localStorage.getItem('token');
+      const savedUser = localStorage.getItem('usuario');
+
+      if (savedToken && savedUser) {
+        setToken(savedToken);
+        setUser(JSON.parse(savedUser));
+      }
+
+      setLoading(false);
+    });
+
+    return () => {
+      cancelado = true;
+    };
+  }, []);
 
   const login = async (correo: string, password: string) => {
     const { data } = await api.post<{ success: boolean; data: AuthResponse }>('/auth/login', { correo, password });

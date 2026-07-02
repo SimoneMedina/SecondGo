@@ -3,9 +3,8 @@ export class TiendaResponseDto {
   nombre: string;
   descripcion: string;
   fechaCreacion: Date;
-  ubicacion: number;
+  ubicacion?: string;
   logo?: string;
-  ruc?: string;
   idVendedor: string;
   cantidadProductos?: number;
 }

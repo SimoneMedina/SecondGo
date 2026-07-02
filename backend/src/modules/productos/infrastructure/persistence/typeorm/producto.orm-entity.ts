@@ -29,9 +29,6 @@ export class ProductoOrmEntity {
   @Column({ type: 'varchar', length: 25, nullable: true })
   talla_producto: string | null;
 
-  @Column({ type: 'varchar', length: 25 })
-  dimensiones_producto: string;
-
   @Column({ type: 'varchar', length: 15 })
   estado_producto: string;
 

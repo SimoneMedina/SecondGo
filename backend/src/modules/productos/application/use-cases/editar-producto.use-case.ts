@@ -32,9 +32,6 @@ export class EditarProductoUseCase {
       ...(dto.talla_producto !== undefined && {
         talla_producto: dto.talla_producto,
       }),
-      ...(dto.dimensiones_producto && {
-        dimensiones_producto: dto.dimensiones_producto,
-      }),
       ...(dto.estado_producto && { estado_producto: dto.estado_producto }),
     });
 

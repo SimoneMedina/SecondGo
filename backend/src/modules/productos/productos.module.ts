@@ -10,10 +10,12 @@ import { ProductoTypeOrmRepository } from './infrastructure/persistence/producto
 import { ProductoOrmEntity } from './infrastructure/persistence/typeorm/producto.orm-entity';
 import { FotoProductoOrmEntity } from './infrastructure/persistence/typeorm/foto-producto.orm-entity';
 import { StorageModule } from '../storage/storage.module';
+import { TiendaOrmEntity } from '../tiendas/infrastructure/persistence/typeorm/tienda.orm-entity';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([ProductoOrmEntity, FotoProductoOrmEntity]),
+    TypeOrmModule.forFeature([TiendaOrmEntity]),
     StorageModule,
   ],
   controllers: [ProductosController],

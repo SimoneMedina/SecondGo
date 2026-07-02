@@ -5,7 +5,6 @@ export class ProductoEntity {
   fecha_publicacion_producto: Date;
   color_producto: string;
   talla_producto?: string;
-  dimensiones_producto: string;
   fotos?: string[];
   estado_producto: string;
   usuario_tienda: string;
