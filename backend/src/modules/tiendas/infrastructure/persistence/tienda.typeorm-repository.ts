@@ -12,7 +12,10 @@ export class TiendaTypeOrmRepository implements ITiendaRepository {
   ) {}
 
   async findAll(): Promise<TiendaOrmEntity[]> {
-    return this.repo.find({ order: { nombre_local: 'ASC' } });
+    return this.repo.find({
+      relations: { Productos: true },
+      order: { nombre_local: 'ASC' },
+    });
   }
 
   async findById(id: string): Promise<TiendaOrmEntity | null> {

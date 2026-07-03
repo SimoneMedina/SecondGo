@@ -24,7 +24,7 @@ export class TiendaMapper {
       ubicacion: orm.ubicacion_tienda ?? undefined,
       logo: orm.logo_local ?? undefined,
       idVendedor: orm.id_vendedor,
-      cantidadProductos: orm.Productos?.length,
+      cantidadProductos: orm.Productos?.length ?? 0,
     };
   }
 }
