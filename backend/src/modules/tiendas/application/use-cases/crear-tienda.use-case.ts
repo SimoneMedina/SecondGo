@@ -1,4 +1,8 @@
-import { Injectable, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  ConflictException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ITiendaRepository } from '../../domain/interfaces/tienda.repository.interface';
@@ -15,8 +19,10 @@ import {
 export class CrearTiendaUseCase {
   constructor(
     private readonly tiendaRepository: ITiendaRepository,
+
     @InjectRepository(VendedorOrmEntity)
     private readonly vendedorRepo: Repository<VendedorOrmEntity>,
+
     private readonly storageService: StorageService,
   ) {}
 
@@ -25,18 +31,19 @@ export class CrearTiendaUseCase {
     idUsuario: string,
     logo?: UploadedStorageFile,
   ): Promise<TiendaResponseDto> {
-    const existeTienda =
-      await this.tiendaRepository.existsByVendedor(idUsuario);
-    if (existeTienda) {
-      throw new ConflictException('Ya tienes una tienda registrada');
-    }
-
-    let vendedor = await this.vendedorRepo.findOne({
+    const vendedor = await this.vendedorRepo.findOne({
       where: { id_vendedor: idUsuario },
     });
+
     if (!vendedor) {
-      vendedor = this.vendedorRepo.create({ id_vendedor: idUsuario });
-      await this.vendedorRepo.save(vendedor);
+      throw new ForbiddenException('Este usuario no está registrado como vendedor');
+    }
+
+    const existeTienda =
+      await this.tiendaRepository.existsByVendedor(idUsuario);
+
+    if (existeTienda) {
+      throw new ConflictException('Ya tienes una tienda registrada');
     }
 
     const logoUrl = logo

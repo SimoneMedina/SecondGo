@@ -1,4 +1,4 @@
-import { IsIn, IsNumber, IsString } from 'class-validator';
+import { IsIn, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export type TipoUsuario = 'comprador' | 'vendedor';
 
@@ -16,7 +16,14 @@ export class RegisterRequestDto {
   contrasena_usuario: string;
 
   @IsNumber()
-  ubicacion_usuario: number;
+  latitud: number;
+
+  @IsNumber()
+  longitud: number;
+
+  @IsOptional()
+  @IsString()
+  direccion?: string;
 
   @IsIn(['comprador', 'vendedor'])
   tipo_usuario: TipoUsuario;

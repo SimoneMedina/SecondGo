@@ -3,9 +3,12 @@ import {
   PrimaryColumn,
   Column,
   OneToOne,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 import { VendedorOrmEntity } from './vendedor.orm-entity';
 import { CompradorOrmEntity } from './comprador.orm-entity';
+import { UbicacionOrmEntity } from '../../../../ubicaciones/infrastructure/persistence/typeorm/ubicacion.orm-entity';
 
 @Entity('Usuarios')
 export class UsuarioOrmEntity {
@@ -24,8 +27,15 @@ export class UsuarioOrmEntity {
   @Column({ type: 'varchar', length: 100 })
   contrasena_usuario: string;
 
-  @Column({ type: 'float' })
+  @Column({ type: 'int' })
   ubicacion_usuario: number;
+
+  @Column({ type: 'varchar', length: 500, nullable: true })
+  foto_usuario: string | null;
+
+  @ManyToOne(() => UbicacionOrmEntity)
+  @JoinColumn({ name: 'ubicacion_usuario' })
+  Ubicacion?: UbicacionOrmEntity;
 
   @OneToOne(() => VendedorOrmEntity, (v) => v.Usuario)
   Vendedor?: VendedorOrmEntity;

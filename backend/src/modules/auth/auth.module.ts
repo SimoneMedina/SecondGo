@@ -8,6 +8,7 @@ import { LoginUseCase } from './application/use-cases/login.use-case';
 import { RegisterUseCase } from './application/use-cases/register.use-case';
 import { IAuthRepository } from './domain/interfaces/auth.repository.interface';
 import { AuthTypeOrmRepository } from './infrastructure/persistence/auth.typeorm-repository';
+import { UbicacionOrmEntity } from '../ubicaciones/infrastructure/persistence/typeorm/ubicacion.orm-entity';
 import { JwtStrategy } from './infrastructure/strategies/jwt.strategy';
 import { UsuarioOrmEntity } from '../usuarios/infrastructure/persistence/typeorm/usuario.orm-entity';
 import { CompradorOrmEntity } from '../usuarios/infrastructure/persistence/typeorm/comprador.orm-entity';
@@ -16,10 +17,11 @@ import { VendedorOrmEntity } from '../usuarios/infrastructure/persistence/typeor
 @Module({
   imports: [
     TypeOrmModule.forFeature([
-      UsuarioOrmEntity,
-      CompradorOrmEntity,
-      VendedorOrmEntity,
-    ]),
+  UsuarioOrmEntity,
+  CompradorOrmEntity,
+  VendedorOrmEntity,
+  UbicacionOrmEntity,
+]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       imports: [ConfigModule],

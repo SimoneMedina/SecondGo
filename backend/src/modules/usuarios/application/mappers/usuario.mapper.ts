@@ -11,6 +11,7 @@ export class UsuarioMapper {
       correo_usuario: orm.correo_usuario,
       contrasena_usuario: orm.contrasena_usuario,
       ubicacion_usuario: orm.ubicacion_usuario,
+      foto_usuario: orm.foto_usuario,
     };
   }
 
@@ -21,6 +22,7 @@ export class UsuarioMapper {
       apellidos: orm.apellidos_usuario,
       correo: orm.correo_usuario,
       ubicacion: orm.ubicacion_usuario,
+      foto: orm.foto_usuario,
     };
   }
 }

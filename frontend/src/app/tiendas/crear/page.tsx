@@ -12,6 +12,7 @@ export default function CrearTiendaPage() {
     descripcion_tienda: '',
     ubicacion_tienda: '',
   });
+
   const [logo, setLogo] = useState<File | null>(null);
   const [error, setError] = useState('');
   const router = useRouter();
@@ -22,10 +23,14 @@ export default function CrearTiendaPage() {
     if (!loading && user?.tipo_usuario !== 'vendedor') router.push('/tiendas');
   }, [user, loading, router]);
 
-  const preview = useMemo(() => (logo ? URL.createObjectURL(logo) : ''), [logo]);
+  const preview = useMemo(() => {
+    return logo ? URL.createObjectURL(logo) : '';
+  }, [logo]);
 
-  useEffect(() => () => {
-    if (preview) URL.revokeObjectURL(preview);
+  useEffect(() => {
+    return () => {
+      if (preview) URL.revokeObjectURL(preview);
+    };
   }, [preview]);
 
   if (loading || !user || user.tipo_usuario !== 'vendedor') return null;
@@ -33,18 +38,35 @@ export default function CrearTiendaPage() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
+
     try {
       const body = new FormData();
+
       body.append('nombre_local', form.nombre_local);
       body.append('descripcion_tienda', form.descripcion_tienda);
       body.append('ubicacion_tienda', form.ubicacion_tienda);
-      if (logo) body.append('logo', logo);
+
+      if (logo) {
+        body.append('logo', logo);
+      }
 
       await api.post('/tiendas', body);
+
       router.push('/tiendas');
     } catch (err: unknown) {
-      const message = axios.isAxiosError(err) ? err.response?.data?.message : undefined;
-      setError(message || 'Error al crear tienda');
+      if (axios.isAxiosError(err)) {
+        console.log(err.response?.data);
+
+        const message = err.response?.data?.message;
+
+        setError(
+          Array.isArray(message)
+            ? message.join(', ')
+            : message || 'Error al crear tienda',
+        );
+      } else {
+        setError('Error al crear tienda');
+      }
     }
   };
 
@@ -60,26 +82,74 @@ export default function CrearTiendaPage() {
 
       <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 shadow-md">
         <div>
-          <label className="mb-1 block text-sm font-medium">Nombre del Local</label>
-          <input type="text" value={form.nombre_local} onChange={(e) => setForm({ ...form, nombre_local: e.target.value })}
-            className="w-full border px-3 py-2 focus:ring-2 focus:ring-indigo-500" required />
+          <label className="mb-1 block text-sm font-medium">
+            Nombre del Local
+          </label>
+          <input
+            type="text"
+            value={form.nombre_local}
+            onChange={(e) =>
+              setForm({ ...form, nombre_local: e.target.value })
+            }
+            className="w-full border px-3 py-2 focus:ring-2 focus:ring-indigo-500"
+            required
+          />
         </div>
+
         <div>
-          <label className="mb-1 block text-sm font-medium">Descripcion</label>
-          <textarea value={form.descripcion_tienda} onChange={(e) => setForm({ ...form, descripcion_tienda: e.target.value })}
-            className="w-full border px-3 py-2 focus:ring-2 focus:ring-indigo-500" required />
+          <label className="mb-1 block text-sm font-medium">
+            Descripción
+          </label>
+          <textarea
+            value={form.descripcion_tienda}
+            onChange={(e) =>
+              setForm({ ...form, descripcion_tienda: e.target.value })
+            }
+            className="w-full border px-3 py-2 focus:ring-2 focus:ring-indigo-500"
+            required
+          />
         </div>
+
         <div>
-          <label className="mb-1 block text-sm font-medium">Ubicacion</label>
-          <input type="text" value={form.ubicacion_tienda} onChange={(e) => setForm({ ...form, ubicacion_tienda: e.target.value })}
-            className="w-full border px-3 py-2 focus:ring-2 focus:ring-indigo-500" required />
+          <label className="mb-1 block text-sm font-medium">
+            Ubicación
+          </label>
+          <input
+            type="text"
+            value={form.ubicacion_tienda}
+            onChange={(e) =>
+              setForm({ ...form, ubicacion_tienda: e.target.value })
+            }
+            className="w-full border px-3 py-2 focus:ring-2 focus:ring-indigo-500"
+            placeholder="Ej: Quito, La Carolina"
+            required
+          />
         </div>
+
         <div>
-          <label className="mb-2 block text-sm font-medium">Logo</label>
-          <input type="file" accept="image/*" onChange={(e) => setLogo(e.target.files?.[0] || null)} className="w-full" />
-          {preview && <img src={preview} alt="Vista previa del logo" className="mt-3 h-40 w-full object-cover" />}
+          <label className="mb-2 block text-sm font-medium">
+            Logo
+          </label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setLogo(e.target.files?.[0] || null)}
+            className="w-full"
+          />
+
+          {preview && (
+            <img
+              src={preview}
+              alt="Vista previa del logo"
+              className="mt-3 h-40 w-full object-cover"
+            />
+          )}
         </div>
-        <button type="submit" className="w-full bg-indigo-600 py-2 text-white hover:bg-indigo-700">
+
+        <button
+          type="submit"
+          className="w-full bg-indigo-600 py-2 text-white hover:bg-indigo-700"
+        >
           Crear Tienda
         </button>
       </form>

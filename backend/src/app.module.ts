@@ -14,6 +14,7 @@ import { TiendaOrmEntity } from './modules/tiendas/infrastructure/persistence/ty
 import { ProductoOrmEntity } from './modules/productos/infrastructure/persistence/typeorm/producto.orm-entity';
 import { FotoProductoOrmEntity } from './modules/productos/infrastructure/persistence/typeorm/foto-producto.orm-entity';
 import { ResenaOrmEntity } from './modules/resenas/infrastructure/persistence/typeorm/resena.orm-entity';
+import { UbicacionOrmEntity } from './modules/ubicaciones/infrastructure/persistence/typeorm/ubicacion.orm-entity';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { ResenaOrmEntity } from './modules/resenas/infrastructure/persistence/ty
           UsuarioOrmEntity,
           VendedorOrmEntity,
           CompradorOrmEntity,
+          UbicacionOrmEntity,
           TiendaOrmEntity,
           ProductoOrmEntity,
           FotoProductoOrmEntity,

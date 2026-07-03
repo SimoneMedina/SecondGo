@@ -6,9 +6,13 @@ import { IUsuarioRepository } from './domain/interfaces/usuario.repository.inter
 import { UsuarioTypeOrmRepository } from './infrastructure/persistence/usuario.typeorm-repository';
 import { UsuarioOrmEntity } from './infrastructure/persistence/typeorm/usuario.orm-entity';
 import { CompradorOrmEntity } from './infrastructure/persistence/typeorm/comprador.orm-entity';
+import { StorageModule } from '../storage/storage.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UsuarioOrmEntity, CompradorOrmEntity])],
+  imports: [
+    TypeOrmModule.forFeature([UsuarioOrmEntity, CompradorOrmEntity]),
+    StorageModule,
+  ],
   controllers: [UsuariosController],
   providers: [
     ObtenerUsuariosUseCase,

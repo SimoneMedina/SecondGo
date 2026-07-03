@@ -5,26 +5,35 @@ import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import axios from 'axios';
+import dynamic from 'next/dynamic';
 import { TipoUsuario } from '@/lib/types';
+
+const MapaUbicacion = dynamic(() => import('@/components/MapaUbicacion'), {
+  ssr: false,
+});
 
 interface RegisterForm {
   nombres_usuario: string;
   apellidos_usuario: string;
   correo_usuario: string;
   contrasena_usuario: string;
-  ubicacion_usuario: number;
+  latitud: number;
+  longitud: number;
+  direccion: string;
   tipo_usuario: TipoUsuario;
 }
 
 export default function RegisterPage() {
   const [form, setForm] = useState<RegisterForm>({
-    nombres_usuario: '',
-    apellidos_usuario: '',
-    correo_usuario: '',
-    contrasena_usuario: '',
-    ubicacion_usuario: 0,
-    tipo_usuario: 'comprador',
-  });
+  nombres_usuario: '',
+  apellidos_usuario: '',
+  correo_usuario: '',
+  contrasena_usuario: '',
+  latitud: -0.180653,
+  longitud: -78.467834,
+  direccion: '',
+  tipo_usuario: 'comprador',
+});
   const [error, setError] = useState('');
   const { register } = useAuth();
   const router = useRouter();
@@ -69,7 +78,7 @@ export default function RegisterPage() {
                 >
                   <span className="block text-sm font-semibold capitalize">{tipo}</span>
                   <span className="mt-1 block text-xs text-gray-500">
-                    {tipo === 'comprador' ? 'Explorar y resenar tiendas' : 'Publicar productos y tienda'}
+                    {tipo === 'comprador' ? 'Explorar y reseñar tiendas' : 'Publicar productos y tienda'}
                   </span>
                 </button>
               ))}
@@ -115,7 +124,40 @@ export default function RegisterPage() {
               required
             />
           </div>
+<div>
+  <label className="mb-2 block text-sm font-medium text-gray-700">
+    Ubicación
+  </label>
 
+  <MapaUbicacion
+    latitud={form.latitud}
+    longitud={form.longitud}
+    onChange={(lat, lng) =>
+      setForm({
+        ...form,
+        latitud: lat,
+        longitud: lng,
+      })
+    }
+  />
+
+  <p className="mt-2 text-xs text-gray-500">
+    Haz clic en el mapa para seleccionar tu ubicación.
+  </p>
+</div>
+
+<div>
+  <label className="mb-1 block text-sm font-medium text-gray-700">
+    Dirección o referencia
+  </label>
+  <input
+    type="text"
+    value={form.direccion}
+    onChange={(e) => setForm({ ...form, direccion: e.target.value })}
+    className="w-full border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+    placeholder="Ej: Quito, La Carolina"
+  />
+</div>
           <button
             type="submit"
             className="w-full bg-indigo-600 py-2 text-white transition hover:bg-indigo-700"

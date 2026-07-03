@@ -10,6 +10,7 @@ import {
   Req,
   UploadedFile,
   UseInterceptors,
+  ForbiddenException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
@@ -60,6 +61,10 @@ export class TiendasController {
     @Req() req: AuthenticatedRequest,
     @UploadedFile() logo?: UploadedStorageFile,
   ) {
+    if (req.user.rol !== 'vendedor') {
+      throw new ForbiddenException('Solo los vendedores pueden crear tiendas');
+    }
+
     return this.crearTiendaUseCase.execute(dto, req.user.id_usuario, logo);
   }
 
@@ -68,7 +73,6 @@ export class TiendasController {
   async update(
     @Param('id') id: string,
     @Body() dto: UpdateTiendaRequestDto,
-    @Req() req: AuthenticatedRequest,
     @UploadedFile() logo?: UploadedStorageFile,
   ) {
     return this.editarTiendaUseCase.execute(id, dto, logo);

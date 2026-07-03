@@ -4,4 +4,5 @@ export class UsuarioResponseDto {
   apellidos: string;
   correo: string;
   ubicacion: number;
+  foto: string | null;
 }
