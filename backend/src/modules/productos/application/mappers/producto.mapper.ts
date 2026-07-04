@@ -8,26 +8,14 @@ export class ProductoMapper {
       id_producto: orm.id_producto,
       nombre_producto: orm.nombre_producto,
       descripcion_producto: orm.descripcion_producto,
-      fecha_publicacion_producto: orm.fecha_publicacion_producto,
       color_producto: orm.color_producto,
-      talla_producto: orm.talla_producto ?? undefined,
-      fotos: orm.Fotos?.map((foto) => foto.url_foto) ?? [],
+      hex_color: orm.hex_color,
+      grupo_color: orm.grupo_color,
+      tipo_prenda: orm.tipo_prenda,
+      estilo_producto: orm.estilo_producto,
+      talla_producto: orm.talla_producto,
       estado_producto: orm.estado_producto,
       usuario_tienda: orm.usuario_tienda,
-    };
-  }
-
-  static entityToResponse(entity: ProductoEntity): ProductoResponseDto {
-    return {
-      id: entity.id_producto,
-      nombre: entity.nombre_producto,
-      descripcion: entity.descripcion_producto,
-      fechaPublicacion: entity.fecha_publicacion_producto,
-      color: entity.color_producto,
-      talla: entity.talla_producto,
-      fotos: entity.fotos ?? [],
-      estado: entity.estado_producto,
-      tiendaId: entity.usuario_tienda,
     };
   }
 
@@ -38,11 +26,17 @@ export class ProductoMapper {
       descripcion: orm.descripcion_producto,
       fechaPublicacion: orm.fecha_publicacion_producto,
       color: orm.color_producto,
-      talla: orm.talla_producto ?? undefined,
-      fotos: orm.Fotos?.map((foto) => foto.url_foto) ?? [],
+      hexColor: orm.hex_color,
+      grupoColor: orm.grupo_color,
+      tipoPrenda: orm.tipo_prenda,
+      estilo: orm.estilo_producto,
+      talla: orm.talla_producto,
       estado: orm.estado_producto,
+      usuarioTienda: orm.usuario_tienda,
       tiendaId: orm.usuario_tienda,
       tiendaNombre: orm.Tienda?.nombre_local,
+      compradorSolicitanteId: orm.id_comprador_solicitante,
+      fotos: orm.Fotos?.map((foto) => foto.url_foto) ?? [],
     };
   }
 }

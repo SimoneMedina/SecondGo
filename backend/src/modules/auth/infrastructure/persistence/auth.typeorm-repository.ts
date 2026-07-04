@@ -24,7 +24,7 @@ export class AuthTypeOrmRepository implements IAuthRepository {
       relations: {
         Vendedor: true,
         Comprador: true,
-        Ubicacion: true,
+
       },
     });
   }
@@ -35,7 +35,6 @@ export class AuthTypeOrmRepository implements IAuthRepository {
       relations: {
         Vendedor: true,
         Comprador: true,
-        Ubicacion: true,
       },
     });
   }

@@ -14,11 +14,17 @@ export class AuthController {
   @Post('login')
   @HttpCode(HttpStatus.OK)
   async login(@Body() dto: LoginRequestDto) {
-    return this.loginUseCase.execute(dto);
+    return {
+      success: true,
+      data: await this.loginUseCase.execute(dto),
+    };
   }
 
   @Post('register')
   async register(@Body() dto: RegisterRequestDto) {
-    return this.registerUseCase.execute(dto);
+    return {
+      success: true,
+      data: await this.registerUseCase.execute(dto),
+    };
   }
 }

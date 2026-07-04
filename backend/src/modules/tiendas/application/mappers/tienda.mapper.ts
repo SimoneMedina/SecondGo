@@ -10,6 +10,8 @@ export class TiendaMapper {
       descripcion_tienda: orm.descripcion_tienda,
       fecha_creacion_tienda: orm.fecha_creacion_tienda,
       ubicacion_tienda: orm.ubicacion_tienda ?? undefined,
+      latitud_tienda: orm.latitud_tienda ?? undefined,
+      longitud_tienda: orm.longitud_tienda ?? undefined,
       logo_local: orm.logo_local ?? undefined,
       id_vendedor: orm.id_vendedor,
     };
@@ -22,6 +24,8 @@ export class TiendaMapper {
       descripcion: orm.descripcion_tienda,
       fechaCreacion: orm.fecha_creacion_tienda,
       ubicacion: orm.ubicacion_tienda ?? undefined,
+      latitud: orm.latitud_tienda,
+      longitud: orm.longitud_tienda,
       logo: orm.logo_local ?? undefined,
       idVendedor: orm.id_vendedor,
       cantidadProductos: orm.Productos?.length ?? 0,

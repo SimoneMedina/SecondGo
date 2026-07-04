@@ -11,18 +11,30 @@ export class ObtenerProductosUseCase {
   async executeAll(): Promise<ProductoListResponseDto> {
     const orms = await this.productoRepository.findAll();
     const productos = orms.map(ProductoMapper.ormToResponse);
-    return { productos, total: productos.length };
+
+    return {
+      productos,
+      total: productos.length,
+    };
   }
 
   async executeById(id: string): Promise<ProductoResponseDto> {
     const orm = await this.productoRepository.findById(id);
-    if (!orm) throw new NotFoundException('Producto no encontrado');
+
+    if (!orm) {
+      throw new NotFoundException('Producto no encontrado');
+    }
+
     return ProductoMapper.ormToResponse(orm);
   }
 
   async executeByTienda(usuarioTienda: string): Promise<ProductoListResponseDto> {
     const orms = await this.productoRepository.findByTienda(usuarioTienda);
     const productos = orms.map(ProductoMapper.ormToResponse);
-    return { productos, total: productos.length };
+
+    return {
+      productos,
+      total: productos.length,
+    };
   }
 }

@@ -3,6 +3,6 @@ export class UsuarioResponseDto {
   nombres: string;
   apellidos: string;
   correo: string;
-  ubicacion: number;
+  ubicacion: number | null;;
   foto: string | null;
 }

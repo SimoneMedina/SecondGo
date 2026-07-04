@@ -11,6 +11,7 @@ import {
   Req,
   UploadedFiles,
   UseInterceptors,
+  Patch,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
@@ -18,6 +19,8 @@ import { CrearProductoUseCase } from './application/use-cases/crear-producto.use
 import { ObtenerProductosUseCase } from './application/use-cases/obtener-productos.use-case';
 import { EditarProductoUseCase } from './application/use-cases/editar-producto.use-case';
 import { EliminarProductoUseCase } from './application/use-cases/eliminar-producto.use-case';
+import { SolicitarProductoUseCase } from './application/use-cases/solicitar-producto.use-case';
+import { ObtenerArmarioUseCase } from './application/use-cases/obtener-armario.use-case';
 import { CreateProductoRequestDto } from './application/dto/request/create-producto.request.dto';
 import { UpdateProductoRequestDto } from './application/dto/request/update-producto.request.dto';
 import { UploadedStorageFile } from '../storage/storage.service';
@@ -37,11 +40,18 @@ export class ProductosController {
     private readonly obtenerProductosUseCase: ObtenerProductosUseCase,
     private readonly editarProductoUseCase: EditarProductoUseCase,
     private readonly eliminarProductoUseCase: EliminarProductoUseCase,
+    private readonly solicitarProductoUseCase: SolicitarProductoUseCase,
+    private readonly obtenerArmarioUseCase: ObtenerArmarioUseCase,
   ) {}
 
   @Get()
   async findAll() {
     return this.obtenerProductosUseCase.executeAll();
+  }
+
+  @Get('armario/mis-prendas')
+  async armario(@Req() req: AuthenticatedRequest) {
+    return this.obtenerArmarioUseCase.execute(req.user.id_usuario);
   }
 
   @Get('tienda/:usuarioTienda')
@@ -54,6 +64,15 @@ export class ProductosController {
     return this.obtenerProductosUseCase.executeById(id);
   }
 
+  @Patch(':id/solicitar')
+  async solicitar(@Param('id') id: string, @Req() req: AuthenticatedRequest) {
+    return this.solicitarProductoUseCase.execute(
+      id,
+      req.user.id_usuario,
+      req.user.rol,
+    );
+  }
+
   @Post()
   @UseInterceptors(FilesInterceptor('fotos', 10))
   async create(
@@ -64,8 +83,8 @@ export class ProductosController {
     if (req.user.rol !== 'vendedor') {
       throw new ForbiddenException('Solo vendedores pueden publicar productos');
     }
-    const usuarioTienda = req.user.id_usuario;
-    return this.crearProductoUseCase.execute(dto, usuarioTienda, fotos ?? []);
+
+    return this.crearProductoUseCase.execute(dto, req.user.id_usuario, fotos ?? []);
   }
 
   @Put(':id')

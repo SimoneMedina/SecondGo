@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class CreateTiendaRequestDto {
   @IsString()
@@ -12,4 +13,12 @@ export class CreateTiendaRequestDto {
   @IsString()
   @IsNotEmpty()
   ubicacion_tienda: string;
+
+  @Type(() => Number)
+  @IsNumber()
+  latitud_tienda: number;
+
+  @Type(() => Number)
+  @IsNumber()
+  longitud_tienda: number;
 }

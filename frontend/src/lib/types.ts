@@ -24,13 +24,19 @@ export interface Producto {
   id: string;
   nombre: string;
   descripcion: string;
-  fechaPublicacion: string;
+  fechaPublicacion?: string;
   color: string;
-  talla?: string;
+  hexColor?: string | null;
+  grupoColor?: string | null;
+  tipoPrenda?: string | null;
+  estilo?: string | null;
+  talla?: string | null;
   fotos: string[];
   estado: string;
+  usuarioTienda?: string;
   tiendaId: string;
   tiendaNombre?: string;
+  compradorSolicitanteId?: string | null;
 }
 
 export interface ProductoListResponse {
@@ -44,6 +50,8 @@ export interface Tienda {
   descripcion: string;
   fechaCreacion: string;
   ubicacion?: string;
+  latitud?: number | null;
+  longitud?: number | null;
   logo?: string;
   idVendedor: string;
   cantidadProductos?: number;
@@ -57,6 +65,7 @@ export interface Resena {
   compradorId: string;
   compradorNombre?: string;
   tiendaId: string;
+  tiendaNombre?: string;
 }
 
 export interface ApiResponse<T> {

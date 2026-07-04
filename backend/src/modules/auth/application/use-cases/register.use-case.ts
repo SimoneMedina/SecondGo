@@ -26,12 +26,6 @@ export class RegisterUseCase {
     const hashedPassword = await bcrypt.hash(dto.contrasena_usuario, 10);
     const idUsuario = randomUUID();
 
-    const ubicacion = await this.authRepository.createUbicacion(
-      dto.latitud,
-      dto.longitud,
-      dto.direccion,
-    );
-
     const usuario = await this.authRepository.create(
       {
         id_usuario: idUsuario,
@@ -39,7 +33,7 @@ export class RegisterUseCase {
         apellidos_usuario: dto.apellidos_usuario,
         correo_usuario: dto.correo_usuario.toLowerCase(),
         contrasena_usuario: hashedPassword,
-        ubicacion_usuario: ubicacion.id_ubicacion,
+        ubicacion_usuario: null,
         foto_usuario: null,
       },
       dto.tipo_usuario,

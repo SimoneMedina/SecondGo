@@ -5,11 +5,14 @@ import { CrearTiendaUseCase } from './application/use-cases/crear-tienda.use-cas
 import { ObtenerTiendasUseCase } from './application/use-cases/obtener-tiendas.use-case';
 import { EditarTiendaUseCase } from './application/use-cases/editar-tienda.use-case';
 import { EliminarTiendaUseCase } from './application/use-cases/eliminar-tienda.use-case';
+import { ObtenerDetalleTiendaUseCase } from './application/use-cases/obtener-detalle-tienda.use-case';
 import { ITiendaRepository } from './domain/interfaces/tienda.repository.interface';
 import { TiendaTypeOrmRepository } from './infrastructure/persistence/tienda.typeorm-repository';
 import { TiendaOrmEntity } from './infrastructure/persistence/typeorm/tienda.orm-entity';
 import { VendedorOrmEntity } from '../usuarios/infrastructure/persistence/typeorm/vendedor.orm-entity';
 import { ProductoOrmEntity } from '../productos/infrastructure/persistence/typeorm/producto.orm-entity';
+import { FotoProductoOrmEntity } from '../productos/infrastructure/persistence/typeorm/foto-producto.orm-entity';
+import { ResenasModule } from '../resenas/resenas.module';
 import { StorageModule } from '../storage/storage.module';
 
 @Module({
@@ -18,7 +21,9 @@ import { StorageModule } from '../storage/storage.module';
       TiendaOrmEntity,
       VendedorOrmEntity,
       ProductoOrmEntity,
+      FotoProductoOrmEntity,
     ]),
+    ResenasModule,
     StorageModule,
   ],
   controllers: [TiendasController],
@@ -27,6 +32,7 @@ import { StorageModule } from '../storage/storage.module';
     ObtenerTiendasUseCase,
     EditarTiendaUseCase,
     EliminarTiendaUseCase,
+    ObtenerDetalleTiendaUseCase,
     {
       provide: ITiendaRepository,
       useClass: TiendaTypeOrmRepository,

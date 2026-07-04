@@ -27,25 +27,15 @@ function ClickMapa({ onChange }: { onChange: Props['onChange'] }) {
   return null;
 }
 
-export default function MapaUbicacion({
-  latitud,
-  longitud,
-  onChange,
-}: Props) {
+export default function MapaUbicacion({ latitud, longitud, onChange }: Props) {
   return (
-    <div className="h-72 overflow-hidden border">
-      <MapContainer
-        center={[latitud, longitud]}
-        zoom={13}
-        className="h-full w-full"
-      >
+    <div className="h-72 overflow-hidden rounded-2xl border border-green-200">
+      <MapContainer center={[latitud, longitud]} zoom={13} className="h-full w-full">
         <TileLayer
           attribution="&copy; OpenStreetMap"
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-
         <Marker position={[latitud, longitud]} icon={icon} />
-
         <ClickMapa onChange={onChange} />
       </MapContainer>
     </div>

@@ -20,5 +20,6 @@ import { ResenaOrmEntity } from './infrastructure/persistence/typeorm/resena.orm
       useClass: ResenaTypeOrmRepository,
     },
   ],
+  exports: [ObtenerResenasUseCase],
 })
 export class ResenasModule {}

@@ -4,6 +4,8 @@ export class TiendaResponseDto {
   descripcion: string;
   fechaCreacion: Date;
   ubicacion?: string;
+  latitud?: number | null;
+  longitud?: number | null;
   logo?: string;
   idVendedor: string;
   cantidadProductos?: number;

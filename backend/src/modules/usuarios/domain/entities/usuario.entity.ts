@@ -4,6 +4,6 @@ export interface UsuarioEntity {
   apellidos_usuario: string;
   correo_usuario: string;
   contrasena_usuario: string;
-  ubicacion_usuario: number;
+  ubicacion_usuario: number | null;
   foto_usuario: string | null;
 }

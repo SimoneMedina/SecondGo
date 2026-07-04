@@ -26,6 +26,12 @@ export class TiendaOrmEntity {
   @Column({ type: 'varchar', length: 250, nullable: true })
   ubicacion_tienda: string | null;
 
+  @Column({ type: 'float', nullable: true })
+  latitud_tienda: number | null;
+
+  @Column({ type: 'float', nullable: true })
+  longitud_tienda: number | null;
+
   @Column({ type: 'varchar', length: 500, nullable: true })
   logo_local: string | null;
 

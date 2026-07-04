@@ -25,16 +25,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="es"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col bg-gray-50">
+    <html lang="es" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+      <body className="min-h-screen flex flex-col bg-green-50 text-slate-900">
         <AuthProvider>
           <Navbar />
-          <main className="flex-1 max-w-7xl mx-auto w-full px-4 py-6">
-            {children}
+          {/* Añadimos un contenedor principal con más aire */}
+          <main className="flex-1 w-full max-w-7xl mx-auto px-4 py-8">
+            <div className="bg-white rounded-2xl shadow-sm border border-green-100 p-6 md:p-8">
+              {children}
+            </div>
           </main>
+          <footer className="py-6 text-center text-sm text-green-700">
+            SecondGo © 2026 - Moda Sostenible
+          </footer>
         </AuthProvider>
       </body>
     </html>
