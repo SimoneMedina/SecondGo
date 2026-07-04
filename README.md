@@ -39,6 +39,16 @@ Actualmente el proyecto corre con `Next.js` en frontend, `NestJS` en backend, `P
 - Vista de tiendas registradas.
 - Vista de reseñas.
 - Navegacion adaptada al rol.
+- Visualizacion de tiendas en un mapa interactivo mediante geolocalizacion.
+- Perfil completo de cada tienda con informacion del vendedor, descripcion, productos publicados y reseñas.
+- Armario virtual con las prendas solicitadas por el comprador.
+- Asistente de sugerencias de outfits inspirado en IA.
+- Recomendaciones de prendas similares mediante coincidencia de:
+  - tipo de prenda
+  - estilo
+  - color
+  - gama cromatica
+- Interfaz adaptada para moda sostenible con identidad visual en tonos verdes.
 
 ### Fotos y almacenamiento
 
@@ -48,6 +58,15 @@ Actualmente el proyecto corre con `Next.js` en frontend, `NestJS` en backend, `P
 - Estructura por vendedor dentro del bucket:
   - `vendedores/{id_vendedor}/tienda/...`
   - `vendedores/{id_vendedor}/productos/{id_producto}/...`
+
+### Tiendas
+
+- Perfil publico para cada tienda.
+- Visualizacion de productos publicados por tienda.
+- Informacion completa del local.
+- Ubicacion geografica.
+- Integracion con mapa interactivo.
+- Visualizacion de reseñas realizadas por compradores.
 
 ### Productos
 
@@ -67,6 +86,34 @@ Actualmente el proyecto corre con `Next.js` en frontend, `NestJS` en backend, `P
   - `Como nuevo`
   - `Usado`
   - `Reacondicionado`
+  - Clasificacion por tipo de prenda.
+- Clasificacion por estilo.
+- Color principal mediante selector visual.
+- Almacenamiento del codigo hexadecimal del color.
+- Clasificacion automatica por grupo cromatico.
+- Preparacion de datos para recomendaciones inteligentes.
+
+### Recomendaciones inteligentes
+
+SecondGo incorpora un sistema de recomendaciones inspirado en inteligencia artificial.
+
+El sistema analiza automaticamente:
+
+- tipo de prenda
+- estilo
+- color principal
+- grupo cromatico
+- talla
+- nombre del producto
+
+Con esta informacion genera:
+
+- sugerencias de outfits
+- prendas similares
+- recomendaciones de combinacion
+- ideas de busqueda para el comprador
+
+Estas recomendaciones se generan mediante reglas inteligentes sobre los metadatos de cada prenda, simulando el comportamiento de un asistente de moda.
 
 ## 🧱 Stack
 
@@ -194,6 +241,9 @@ NEXT_PUBLIC_API_URL=http://localhost:3131/api
 - `/productos`
 - `/productos/crear`
 - `/resenas`
+- `/productos/[id]`
+- `/tiendas/[id]`
+- `/armario`
 
 ### Backend API
 
@@ -207,6 +257,9 @@ NEXT_PUBLIC_API_URL=http://localhost:3131/api
 - `POST /api/productos`
 - `GET /api/resenas`
 - `POST /api/resenas`
+- `GET /api/tiendas/:id/detalle`
+- `GET /api/productos/:id`
+- `GET /api/productos/armario`
 
 ## 🧠 Reglas de negocio implementadas
 
@@ -215,16 +268,27 @@ NEXT_PUBLIC_API_URL=http://localhost:3131/api
 - Un `comprador` no puede publicar productos.
 - Las fotos de productos y logos de tienda se guardan fuera de la base de datos.
 - El backend usa `synchronize: true` con TypeORM en el estado actual del proyecto.
+- Cada tienda almacena su ubicacion geografica para ser mostrada en el mapa.
+- Cada producto almacena atributos que permiten generar recomendaciones inteligentes.
+- El sistema clasifica las prendas por tipo, estilo y grupo cromatico.
+- Los compradores disponen de un armario virtual con las prendas solicitadas.
+- El asistente de outfits utiliza los atributos de las prendas para sugerir combinaciones similares.
 
 ## 📦 Estado actual del proyecto
 
 SecondGo ya permite probar un flujo funcional de punta a punta:
 
-1. Registrar un vendedor.
-2. Crear su tienda.
-3. Publicar productos con imagenes.
-4. Registrar un comprador.
-5. Explorar catalogo, tiendas y reseñas desde el frontend.
+1. Registrar vendedores y compradores.
+2. Crear tiendas con ubicacion y logo.
+3. Publicar productos con multiples fotografias.
+4. Clasificar automaticamente las prendas mediante atributos de moda.
+5. Explorar el catalogo de productos.
+6. Buscar prendas mediante filtros inteligentes.
+7. Visualizar tiendas en un mapa interactivo.
+8. Consultar el perfil completo de cada tienda.
+9. Gestionar reseñas.
+10. Administrar un armario virtual.
+11. Obtener sugerencias de outfits mediante un asistente inspirado en IA.
 
 ## 🛠️ Scripts utiles
 
